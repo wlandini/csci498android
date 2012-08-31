@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--<ScrollView >  -->
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:stretchColumns="1" >
 
     <TableRow>
-
         <TextView android:text="Name:" />
-
         <EditText android:id="@+id/name" />
     </TableRow>
 
@@ -35,6 +34,12 @@
             android:layout_height="wrap_content" >
 
             <RadioButton
+                android:id="@+id/delivery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delivery" />
+
+            <RadioButton
                 android:id="@+id/take_out"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,11 +52,37 @@
                 android:layout_height="wrap_content"
                 android:text="Sit-Down" />
 
-            <RadioButton
-                android:id="@+id/delivery"
+           <!--<RadioButton	
+                android:id="@+id/radioButton1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Delivery" />
+                android:text="RadioButton" />
+
+            <RadioButton
+                android:id="@+id/radioButton5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RadioButton" />
+
+            <RadioButton
+                android:id="@+id/radioButton4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RadioButton" />
+
+            <RadioButton
+                android:id="@+id/radioButton3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RadioButton" />
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RadioButton" />
+            --> 
+
         </RadioGroup>
 
     </TableRow>
@@ -61,3 +92,4 @@
 	android:layout_height="wrap_content"
 	android:text="Save" />
 </TableLayout>
+<!--</ScrollView >  -->
