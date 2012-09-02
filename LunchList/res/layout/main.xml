@@ -16,9 +16,7 @@
   	    </TableRow>
   	    <TableRow>
   	        <TextView android:text="Address:"/>
-<!--   	        <AutoCompleteTextView  -->
-<!--   	            android:id="@+id/addr"/> -->
-			<EditText android:id="@+id/addr"/>
+  	        <AutoCompleteTextView android:id="@+id/addr"/>
   	    </TableRow>
   	    <TableRow>
   	        <TextView android:text="Type:"/>
@@ -54,5 +52,4 @@
 <!-- 	    android:layout_above="@id/details" -->
 <!-- 	    android:textColor="#000000" -->
 <!-- 	/> -->
-	 -->
 </RelativeLayout>
