@@ -20,7 +20,7 @@ import android.widget.TextView;
 public class LunchListActivity extends Activity {
     List<Restaurant> model = new ArrayList<Restaurant>();
 	ArrayAdapter<Restaurant> adapter = null;
-	//SpinnerAdapter adapter2 = null;
+	SpinnerAdapter adapter2 = null;
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,10 +29,11 @@ public class LunchListActivity extends Activity {
         Button save = (Button)findViewById(R.id.save);
         save.setOnClickListener(onSave);
         ListView list = (ListView)findViewById(R.id.restaurants);
-        //Spinner s = (Spinner)findViewById(R.id.restaurants1);
+        //Spinner s = (Spinner)findViewById(R.id.restaurants);
         adapter = new ArrayAdapter<Restaurant>(this,android.R.layout.simple_list_item_1,model);
+        //adapter = new ArrayAdapter<Restaurant>(this,android.R.layout.simple_spinner_dropdown_item,model);
         list.setAdapter(adapter);
-        //s.setAdapter(adapter2);
+        //s.setAdapter(adapter);
     }
     
     private View.OnClickListener onSave = new View.OnClickListener(){
@@ -71,7 +72,6 @@ public class LunchListActivity extends Activity {
 					break;
 			}
 			adapter.add(r);
-			//((List<Restaurant>) adapter2).add(r);
 		}
 	};
 }
