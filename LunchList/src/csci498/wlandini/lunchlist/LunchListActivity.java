@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.TabActivity;
-import android.widget.TabHost;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,8 +22,9 @@ import android.widget.SpinnerAdapter;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.AdapterView;
+import android.widget.ViewFlipper;
 
-public class LunchListActivity extends TabActivity {
+public class LunchListActivity extends Activity {
     List<Restaurant> model = new ArrayList<Restaurant>();
     List<String> addresses = new ArrayList<String>();
     AutoCompleteTextView adressACTV;
@@ -34,15 +33,20 @@ public class LunchListActivity extends TabActivity {
 	EditText name = null;
 	EditText address = null;
 	RadioGroup types = null;
+	ViewFlipper vf = null;
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        vf = (ViewFlipper)findViewById(R.id.viewflipper);
+        vf.setDisplayedChild(0);
         name = (EditText)findViewById(R.id.name);
         address = (EditText)findViewById(R.id.addr);
         types = (RadioGroup)findViewById(R.id.types);
         Button save = (Button)findViewById(R.id.save);
+        Button flipButton = (Button)findViewById(R.id.flipView);
+        flipButton.setOnClickListener(onList);
         save.setOnClickListener(onSave);
         ListView list = (ListView)findViewById(R.id.restaurants);
         list.setOnItemClickListener(onListClick);
@@ -51,18 +55,12 @@ public class LunchListActivity extends TabActivity {
         adapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,addresses);
         list.setAdapter(adapter);
         adressACTV.setAdapter(adapter2);
-        //s.setAdapter(adapter);
-        TabHost.TabSpec spec = getTabHost().newTabSpec("tag1");
-        spec.setContent(R.id.restaurants);
-        spec.setIndicator("List", getResources().getDrawable(R.drawable.list));
-        getTabHost().addTab(spec);
-        spec = getTabHost().newTabSpec("tag2");
-        spec.setContent(R.id.details);
-        spec.setIndicator("Details", getResources().getDrawable(R.drawable.restaurant));
-        getTabHost().addTab(spec);
-        getTabHost().setCurrentTab(0);
     }
-    
+    private View.OnClickListener onList = new View.OnClickListener() {
+		public void onClick(View v) {
+			vf.setDisplayedChild(1);
+		}
+	};
     private View.OnClickListener onSave = new View.OnClickListener(){
 		public void onClick(View v) {
 			Restaurant r = new Restaurant();
@@ -169,7 +167,7 @@ public class LunchListActivity extends TabActivity {
 			Restaurant r = model.get(position);
 			name.setText(r.getName());
 			address.setText(r.getAddress());
-			getTabHost().setCurrentTab(1);
+			vf.setDisplayedChild(0);
 			if(r.getType().equals("sit_down")){
 				types.check(R.id.sit_down);
 			}
