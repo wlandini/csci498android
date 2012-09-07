@@ -1,9 +1,11 @@
 package csci498.wlandini.lunchlist;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -25,15 +28,20 @@ import android.widget.AdapterView;
 import android.widget.ViewFlipper;
 
 public class LunchListActivity extends Activity {
-    List<Restaurant> model = new ArrayList<Restaurant>();
+    private static final int DATE_DIALOG_ID = 0;
+	List<Restaurant> model = new ArrayList<Restaurant>();
     List<String> addresses = new ArrayList<String>();
     AutoCompleteTextView adressACTV;
 	RestaurantAdapter adapter = null;
 	ArrayAdapter<String> adapter2 = null;
 	EditText name = null;
 	EditText address = null;
+	EditText date = null;
 	RadioGroup types = null;
 	ViewFlipper vf = null;
+	private int mYear;
+	private int mDay;
+	private int mMonth;
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +51,7 @@ public class LunchListActivity extends Activity {
         vf.setDisplayedChild(0);
         name = (EditText)findViewById(R.id.name);
         address = (EditText)findViewById(R.id.addr);
+        date = (EditText)findViewById(R.id.date);
         types = (RadioGroup)findViewById(R.id.types);
         Button save = (Button)findViewById(R.id.save);
         Button flipButton = (Button)findViewById(R.id.flipView);
@@ -56,20 +65,23 @@ public class LunchListActivity extends Activity {
         list.setAdapter(adapter);
         adressACTV.setAdapter(adapter2);
     }
+    
     private View.OnClickListener onList = new View.OnClickListener() {
 		public void onClick(View v) {
 			vf.setDisplayedChild(1);
 		}
 	};
+	
     private View.OnClickListener onSave = new View.OnClickListener(){
 		public void onClick(View v) {
+			showDialog(DATE_DIALOG_ID);
 			Restaurant r = new Restaurant();
 			EditText name = (EditText)findViewById(R.id.name);
 			AutoCompleteTextView adressACTV = (AutoCompleteTextView)findViewById(R.id.addr);
 			r.setName(name.getText().toString());
 			r.setAddress(adressACTV.getText().toString());
+			r.setDate(Integer.toString(mMonth) + "/" + Integer.toString(mDay) + "/" + Integer.toString(mYear));
 			RadioGroup types = (RadioGroup)findViewById(R.id.types);
-			
 			switch(types.getCheckedRadioButtonId()){
 				case R.id.sit_down:
 					r.setType("sit_down");
@@ -85,6 +97,7 @@ public class LunchListActivity extends Activity {
 			}
 			adapter.add(r);
 			adapter2.add(r.getAddress());
+			r.setDate(Integer.toString(mMonth) + "/" + Integer.toString(mDay) + "/" + Integer.toString(mYear));
 		}
 	};
 	
@@ -137,16 +150,19 @@ public class LunchListActivity extends Activity {
 	static class RestaurantHolder{
 		private TextView name = null;
 		private TextView address = null;
+		private TextView date = null;
 		private ImageView icon = null;
 		
 		RestaurantHolder(View row){
 			name = (TextView)row.findViewById(R.id.title);
 			address = (TextView)row.findViewById(R.id.address);
+			date = (TextView)row.findViewById(R.id.date);
 			icon = (ImageView)row.findViewById(R.id.icon);
 		}
 		void populateFrom(Restaurant r){
 			name.setText(r.getName());
 			address.setText(r.getAddress());
+			date.setText(r.getDate());
 			if(r.getType().equals("sit_down")){
 				icon.setImageResource(R.drawable.ball_red);
 				name.setTextColor(Color.RED);
@@ -167,6 +183,7 @@ public class LunchListActivity extends Activity {
 			Restaurant r = model.get(position);
 			name.setText(r.getName());
 			address.setText(r.getAddress());
+			date.setText(r.getDate());
 			vf.setDisplayedChild(0);
 			if(r.getType().equals("sit_down")){
 				types.check(R.id.sit_down);
@@ -179,4 +196,25 @@ public class LunchListActivity extends Activity {
 			}
 		}
 	};
+	
+	private DatePickerDialog.OnDateSetListener mDateSetListener =
+            new DatePickerDialog.OnDateSetListener() {
+                public void onDateSet(DatePicker view, int year,
+                                      int monthOfYear, int dayOfMonth) {
+                    mYear = year;
+                    mMonth = monthOfYear;
+                    mDay = dayOfMonth;
+                   
+                }
+
+            };
+        	@Override
+        	protected Dialog onCreateDialog(int id) {
+        		switch (id) {
+        		case DATE_DIALOG_ID:
+        			return new DatePickerDialog(this, mDateSetListener, mYear, mMonth,
+        					mDay);
+        		}
+        		return null;
+        	}
 }
