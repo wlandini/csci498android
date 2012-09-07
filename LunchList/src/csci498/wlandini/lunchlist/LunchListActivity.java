@@ -3,6 +3,9 @@ package csci498.wlandini.lunchlist;
 import java.util.ArrayList;
 import java.util.List;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TabActivity;
+import android.widget.TabHost;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,50 +23,54 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.AdapterView;
 
-public class LunchListActivity extends Activity {
+public class LunchListActivity extends TabActivity {
     List<Restaurant> model = new ArrayList<Restaurant>();
     List<String> addresses = new ArrayList<String>();
-    AutoCompleteTextView address;
+    AutoCompleteTextView adressACTV;
 	RestaurantAdapter adapter = null;
 	ArrayAdapter<String> adapter2 = null;
+	EditText name = null;
+	EditText address = null;
+	RadioGroup types = null;
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        name = (EditText)findViewById(R.id.name);
+        address = (EditText)findViewById(R.id.addr);
+        types = (RadioGroup)findViewById(R.id.types);
         Button save = (Button)findViewById(R.id.save);
         save.setOnClickListener(onSave);
         ListView list = (ListView)findViewById(R.id.restaurants);
-        AutoCompleteTextView address = (AutoCompleteTextView)findViewById(R.id.addr);
-        //Spinner s = (Spinner)findViewById(R.id.restaurants);
+        list.setOnItemClickListener(onListClick);
+        AutoCompleteTextView adressACTV = (AutoCompleteTextView)findViewById(R.id.addr);
         adapter = new RestaurantAdapter();
         adapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,addresses);
-        //adapter = new ArrayAdapter<Restaurant>(this,android.R.layout.simple_spinner_dropdown_item,model);
         list.setAdapter(adapter);
-        address.setAdapter(adapter2);
+        adressACTV.setAdapter(adapter2);
         //s.setAdapter(adapter);
+        TabHost.TabSpec spec = getTabHost().newTabSpec("tag1");
+        spec.setContent(R.id.restaurants);
+        spec.setIndicator("List", getResources().getDrawable(R.drawable.list));
+        getTabHost().addTab(spec);
+        spec = getTabHost().newTabSpec("tag2");
+        spec.setContent(R.id.details);
+        spec.setIndicator("Details", getResources().getDrawable(R.drawable.restaurant));
+        getTabHost().addTab(spec);
+        getTabHost().setCurrentTab(0);
     }
     
     private View.OnClickListener onSave = new View.OnClickListener(){
 		public void onClick(View v) {
 			Restaurant r = new Restaurant();
 			EditText name = (EditText)findViewById(R.id.name);
-			//EditText address = (EditText)findViewById(R.id.addr);
-			AutoCompleteTextView address = (AutoCompleteTextView)findViewById(R.id.addr);
+			AutoCompleteTextView adressACTV = (AutoCompleteTextView)findViewById(R.id.addr);
 			r.setName(name.getText().toString());
-			r.setAddress(address.getText().toString());
+			r.setAddress(adressACTV.getText().toString());
 			RadioGroup types = (RadioGroup)findViewById(R.id.types);
-			//This is how you create the radio buttons without using the xml file
-//			RadioButton rb1 = new RadioButton(null);
-//			RadioButton rb2 = new RadioButton(null);
-//			RadioButton rb3 = new RadioButton(null);
-//			rb1.setText("Take-Out");
-//			rb2.setText("Sit-Down");
-//			rb3.setText("Delivery");
-//			types.addView(rb1);
-//			types.addView(rb2);
-//			types.addView(rb3);
 			
 			switch(types.getCheckedRadioButtonId()){
 				case R.id.sit_down:
@@ -156,4 +163,22 @@ public class LunchListActivity extends Activity {
 			}
 		}
 	}
+	
+	private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener(){
+		public void onItemClick(AdapterView<?> parent,View view, int position, long id){
+			Restaurant r = model.get(position);
+			name.setText(r.getName());
+			address.setText(r.getAddress());
+			getTabHost().setCurrentTab(1);
+			if(r.getType().equals("sit_down")){
+				types.check(R.id.sit_down);
+			}
+			else if(r.getType().equals("take_out")){
+				types.check(R.id.take_out);
+			}
+			else{
+				types.check(R.id.delivery);
+			}
+		}
+	};
 }
