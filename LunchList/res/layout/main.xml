@@ -36,6 +36,13 @@
 			  	           	/>
 			  	        </RadioGroup>
 			  	    </TableRow>
+
+			  	    <Button
+			  	        android:id="@+id/setDate"
+			  	        android:layout_width="wrap_content"
+			  	        android:layout_height="wrap_content"
+			  	        android:text="Set Date" />
+
 			  	    <Button android:id="@+id/save"
 			  	        android:layout_width="match_parent"
 			  	        android:layout_height="wrap_content"
@@ -59,7 +66,11 @@
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1" >
 		        </ListView>
-
+		        <Button
+		            android:id="@+id/flipView2"
+		            android:layout_width="wrap_content"
+			  	    android:layout_height="wrap_content"
+					android:text="Details" />
     		</LinearLayout>
 	</ViewFlipper>	
 </LinearLayout>  	

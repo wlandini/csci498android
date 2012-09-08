@@ -18,17 +18,15 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 public class LunchListActivity extends Activity {
     private static final int DATE_DIALOG_ID = 0;
+    private static boolean DATE_SET = false;
 	List<Restaurant> model = new ArrayList<Restaurant>();
     List<String> addresses = new ArrayList<String>();
     AutoCompleteTextView adressACTV;
@@ -48,13 +46,20 @@ public class LunchListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         vf = (ViewFlipper)findViewById(R.id.viewflipper);
+        //Set view to main.
         vf.setDisplayedChild(0);
         name = (EditText)findViewById(R.id.name);
         address = (EditText)findViewById(R.id.addr);
         date = (EditText)findViewById(R.id.date);
         types = (RadioGroup)findViewById(R.id.types);
+        //Create save button
         Button save = (Button)findViewById(R.id.save);
+        //Create button to flip to other view
         Button flipButton = (Button)findViewById(R.id.flipView);
+        Button flipButton2 = (Button)findViewById(R.id.flipView2);
+        flipButton2.setOnClickListener(onDetails);
+        Button setDate = (Button)findViewById(R.id.setDate);
+        setDate.setOnClickListener(onSetDate);
         flipButton.setOnClickListener(onList);
         save.setOnClickListener(onSave);
         ListView list = (ListView)findViewById(R.id.restaurants);
@@ -66,27 +71,48 @@ public class LunchListActivity extends Activity {
         adressACTV.setAdapter(adapter2);
     }
     
+    //When list button is clicked change to the list view. 
     private View.OnClickListener onList = new View.OnClickListener() {
 		public void onClick(View v) {
 			vf.setDisplayedChild(1);
 		}
 	};
 	
+	private View.OnClickListener onDetails = new View.OnClickListener() {
+		public void onClick(View v) {
+			vf.setDisplayedChild(0);	
+		}
+	};
+	
+	private View.OnClickListener onSetDate = new View.OnClickListener() {
+		
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			showDialog(DATE_DIALOG_ID);
+			DATE_SET = true;
+		}
+	};
+	
     private View.OnClickListener onSave = new View.OnClickListener(){
 		public void onClick(View v) {
-			showDialog(DATE_DIALOG_ID);
 			Restaurant r = new Restaurant();
 			EditText name = (EditText)findViewById(R.id.name);
 			AutoCompleteTextView adressACTV = (AutoCompleteTextView)findViewById(R.id.addr);
 			r.setName(name.getText().toString());
 			r.setAddress(adressACTV.getText().toString());
-			r.setDate(Integer.toString(mMonth) + "/" + Integer.toString(mDay) + "/" + Integer.toString(mYear));
+			if(DATE_SET == false){
+				Calendar c = Calendar.getInstance();
+				r.setDate(Integer.toString(c.MONTH) + "/" +  Integer.toString(c.DAY_OF_MONTH) + "/" + Integer.toString(c.YEAR));
+			}
+			else{
+				r.setDate(Integer.toString(mMonth) + "/" + Integer.toString(mDay) + "/" + Integer.toString(mYear));
+			}
 			RadioGroup types = (RadioGroup)findViewById(R.id.types);
 			switch(types.getCheckedRadioButtonId()){
 				case R.id.sit_down:
 					r.setType("sit_down");
 					break;
-				
+					
 				case R.id.take_out:
 					r.setType("take_out");
 					break;
@@ -97,7 +123,6 @@ public class LunchListActivity extends Activity {
 			}
 			adapter.add(r);
 			adapter2.add(r.getAddress());
-			r.setDate(Integer.toString(mMonth) + "/" + Integer.toString(mDay) + "/" + Integer.toString(mYear));
 		}
 	};
 	
@@ -178,12 +203,12 @@ public class LunchListActivity extends Activity {
 		}
 	}
 	
+	//When clicking an item in the list do this
 	private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener(){
 		public void onItemClick(AdapterView<?> parent,View view, int position, long id){
 			Restaurant r = model.get(position);
 			name.setText(r.getName());
 			address.setText(r.getAddress());
-			date.setText(r.getDate());
 			vf.setDisplayedChild(0);
 			if(r.getType().equals("sit_down")){
 				types.check(R.id.sit_down);
@@ -203,10 +228,8 @@ public class LunchListActivity extends Activity {
                                       int monthOfYear, int dayOfMonth) {
                     mYear = year;
                     mMonth = monthOfYear;
-                    mDay = dayOfMonth;
-                   
+                    mDay = dayOfMonth;  
                 }
-
             };
         	@Override
         	protected Dialog onCreateDialog(int id) {
