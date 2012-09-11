@@ -90,10 +90,17 @@ public class LunchListActivity extends TabActivity {
 		  runOnUiThread(new Runnable(){
 			  public void run(){
 				  setProgressBarVisibility(false);
+				  if(getTabHost().getCurrentTab() == 0){
+					  getTabHost().setCurrentTab(1);
+				  }
+				  else if(getTabHost().getCurrentTab() == 1){
+					  getTabHost().setCurrentTab(0);
+				  }
 			  }
 		  });
 	  }
   };
+  
   private void doSomeLongWork(final int incr){
 	  runOnUiThread(new Runnable(){
 		  public void run(){
@@ -115,6 +122,7 @@ public class LunchListActivity extends TabActivity {
   
     return(super.onCreateOptionsMenu(menu));
   }
+  
   public boolean onPrepareOptionsMenu(Menu menu){
 	  menu.clear();
 	  if(isDetails){
@@ -125,6 +133,7 @@ public class LunchListActivity extends TabActivity {
 		}
 	  return(super.onCreateOptionsMenu(menu));
   }
+  
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     if (item.getItemId() == R.id.toast) {
