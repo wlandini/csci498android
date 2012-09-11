@@ -3,6 +3,7 @@ package csci498.wlandini.lunchlist;
 import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -29,17 +31,19 @@ import csci498.wlandini.lunchlist.R.drawable;
 public class LunchListActivity extends TabActivity {
   List<Restaurant> model=new ArrayList<Restaurant>();
   RestaurantAdapter adapter=null;
-  EditText name=null;
-  EditText address=null;
-  EditText notes=null;
-  RadioGroup types=null;
-  Restaurant current=null;
+  EditText name = null;
+  EditText address = null;
+  EditText notes = null;
+  RadioGroup types = null;
+  Restaurant current = null;
   TabHost th;
+  int progress = 0;
   
   boolean isDetails = false;
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    requestWindowFeature(Window.FEATURE_PROGRESS);
     setContentView(R.layout.main);
     
     name=(EditText)findViewById(R.id.name);
@@ -77,10 +81,31 @@ public class LunchListActivity extends TabActivity {
  
     list.setOnItemClickListener(onListClick);
   }
-
+  
+  private Runnable longTask = new Runnable(){
+	  public void run(){
+		  for(int i = 0; i < 20; i++){
+			  doSomeLongWork(500);
+		  }
+		  runOnUiThread(new Runnable(){
+			  public void run(){
+				  setProgressBarVisibility(false);
+			  }
+		  });
+	  }
+  };
+  private void doSomeLongWork(final int incr){
+	  runOnUiThread(new Runnable(){
+		  public void run(){
+			  progress += incr;
+			  setProgress(progress);
+		  }
+	  });
+	  SystemClock.sleep(250);
+  }
+  
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-	  Toast.makeText(this, Boolean.toString(isDetails), Toast.LENGTH_LONG).show();
 	if(isDetails){
 		new MenuInflater(this).inflate(R.menu.option, menu);
 	}
@@ -102,10 +127,10 @@ public class LunchListActivity extends TabActivity {
   }
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    if (item.getItemId()==R.id.toast) {
-      String message="No restaurant selected";
+    if (item.getItemId() == R.id.toast) {
+      String message = "No restaurant selected";
       
-      if (current!=null) {
+      if (current != null) {
         message=current.getNotes();
       }
       new AlertDialog.Builder(this).setTitle("Notes on restaurant").setMessage(message).setNeutralButton("Close",null).show();
@@ -117,6 +142,11 @@ public class LunchListActivity extends TabActivity {
     }
     else if(item.getItemId() == R.id.item2){
     	getTabHost().setCurrentTab(1);
+    }
+    else if(item.getItemId() == R.id.run){
+    	setProgressBarVisibility(true);
+    	progress = 0;
+    	new Thread(longTask).start();
     }
     return(super.onOptionsItemSelected(item));
   }
