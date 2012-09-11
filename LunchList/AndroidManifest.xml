@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="csci498.wlandini.lunchlist"
-    android:versionCode="1"
-    android:versionName="1.0" >
-
-    <uses-sdk android:minSdkVersion="8" />
-    <supports-screens android:smallScreens="false" android:largeScreens="true" android:normalScreens="true"/>
-
-    <application
-        android:icon="@drawable/unreal"
-        android:label="@string/app_name" >
-        <activity
-            android:name=".LunchListActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>
-
+<manifest android:versionCode="1"
+          android:versionName="1.0"
+          package="csci498.wlandini.lunchlist"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+          <uses-sdk android:minSdkVersion="8" />
+  <supports-screens android:largeScreens="true"
+                    android:normalScreens="true"
+                    android:smallScreens="false" />
+  <application android:label="@string/app_name">
+    <activity android:label="@string/app_name"
+              android:name=".LunchListActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+  </application>
 </manifest>
