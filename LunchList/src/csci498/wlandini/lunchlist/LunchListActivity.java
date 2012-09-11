@@ -3,6 +3,7 @@ package csci498.wlandini.lunchlist;
 import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,10 +18,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
+
+import csci498.wlandini.lunchlist.R.drawable;
 
 public class LunchListActivity extends TabActivity {
   List<Restaurant> model=new ArrayList<Restaurant>();
@@ -30,7 +34,9 @@ public class LunchListActivity extends TabActivity {
   EditText notes=null;
   RadioGroup types=null;
   Restaurant current=null;
+  TabHost th;
   
+  boolean isDetails = false;
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -40,22 +46,29 @@ public class LunchListActivity extends TabActivity {
     address=(EditText)findViewById(R.id.addr);
     notes=(EditText)findViewById(R.id.notes);
     types=(RadioGroup)findViewById(R.id.types);
-    
     Button save=(Button)findViewById(R.id.save);
-    
+    th = getTabHost();
+    th.setOnTabChangedListener(new OnTabChangeListener() {
+        public void onTabChanged(String arg0) { 
+        	if(th.getCurrentTab() == 0){
+        		isDetails = false;
+        	}
+        	else{
+        		isDetails = true;
+        	}
+        }     
+    });  
     save.setOnClickListener(onSave);
     
-    ListView list=(ListView)findViewById(R.id.restaurants);
+    ListView list = (ListView)findViewById(R.id.restaurants);
     
     adapter=new RestaurantAdapter();
     list.setAdapter(adapter);
     
-    TabHost.TabSpec spec=getTabHost().newTabSpec("tag1");
-    
+    TabHost.TabSpec spec = getTabHost().newTabSpec("tag1");
     spec.setContent(R.id.restaurants);
     spec.setIndicator("List", getResources().getDrawable(R.drawable.list));
     getTabHost().addTab(spec);
-    
     spec=getTabHost().newTabSpec("tag2");
     spec.setContent(R.id.details);
     spec.setIndicator("Details", getResources().getDrawable(R.drawable.restaurant));
@@ -64,13 +77,29 @@ public class LunchListActivity extends TabActivity {
  
     list.setOnItemClickListener(onListClick);
   }
-  
+
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    new MenuInflater(this).inflate(R.menu.option, menu);
+	  Toast.makeText(this, Boolean.toString(isDetails), Toast.LENGTH_LONG).show();
+	if(isDetails){
+		new MenuInflater(this).inflate(R.menu.option, menu);
+	}
+	else{
+		new MenuInflater(this).inflate(R.menu.option2, menu);
+	}
+  
     return(super.onCreateOptionsMenu(menu));
   }
-
+  public boolean onPrepareOptionsMenu(Menu menu){
+	  menu.clear();
+	  if(isDetails){
+			new MenuInflater(this).inflate(R.menu.option, menu);
+		}
+		else{
+			new MenuInflater(this).inflate(R.menu.option2, menu);
+		}
+	  return(super.onCreateOptionsMenu(menu));
+  }
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     if (item.getItemId()==R.id.toast) {
@@ -81,10 +110,14 @@ public class LunchListActivity extends TabActivity {
       }
       new AlertDialog.Builder(this).setTitle("Notes on restaurant").setMessage(message).setNeutralButton("Close",null).show();
       //Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-      
       return(true);
     }
-    
+    else if(item.getItemId() == R.id.item1){
+    	getTabHost().setCurrentTab(0);
+    }
+    else if(item.getItemId() == R.id.item2){
+    	getTabHost().setCurrentTab(1);
+    }
     return(super.onOptionsItemSelected(item));
   }
   
