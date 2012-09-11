@@ -1,5 +1,6 @@
 package csci498.wlandini.lunchlist;
 
+import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -67,7 +68,6 @@ public class LunchListActivity extends TabActivity {
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     new MenuInflater(this).inflate(R.menu.option, menu);
-
     return(super.onCreateOptionsMenu(menu));
   }
 
@@ -79,8 +79,8 @@ public class LunchListActivity extends TabActivity {
       if (current!=null) {
         message=current.getNotes();
       }
-      
-      Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+      new AlertDialog.Builder(this).setTitle("Notes on restaurant").setMessage(message).setNeutralButton("Close",null).show();
+      //Toast.makeText(this, message, Toast.LENGTH_LONG).show();
       
       return(true);
     }
