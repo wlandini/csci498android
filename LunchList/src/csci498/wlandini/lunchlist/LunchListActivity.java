@@ -3,6 +3,8 @@ package csci498.wlandini.lunchlist;
 import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
@@ -38,7 +40,7 @@ public class LunchListActivity extends TabActivity {
   Restaurant current = null;
   TabHost th;
   int progress = 0;
-  
+  Handler h;
   boolean isDetails = false;
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class LunchListActivity extends TabActivity {
     requestWindowFeature(Window.FEATURE_PROGRESS);
     setContentView(R.layout.main);
     
+    h = new Handler();
     name=(EditText)findViewById(R.id.name);
     address=(EditText)findViewById(R.id.addr);
     notes=(EditText)findViewById(R.id.notes);
@@ -62,6 +65,7 @@ public class LunchListActivity extends TabActivity {
         	}
         }     
     });  
+    
     save.setOnClickListener(onSave);
     
     ListView list = (ListView)findViewById(R.id.restaurants);
@@ -87,7 +91,7 @@ public class LunchListActivity extends TabActivity {
 		  for(int i = 0; i < 20; i++){
 			  doSomeLongWork(500);
 		  }
-		  runOnUiThread(new Runnable(){
+		  h.post(new Runnable(){
 			  public void run(){
 				  setProgressBarVisibility(false);
 				  if(getTabHost().getCurrentTab() == 0){
@@ -98,16 +102,33 @@ public class LunchListActivity extends TabActivity {
 				  }
 			  }
 		  });
+//		  runOnUiThread(new Runnable(){
+//			  public void run(){
+//				  setProgressBarVisibility(false);
+//				  if(getTabHost().getCurrentTab() == 0){
+//					  getTabHost().setCurrentTab(1);
+//				  }
+//				  else if(getTabHost().getCurrentTab() == 1){
+//					  getTabHost().setCurrentTab(0);
+//				  }
+//			  }
+//		  });
 	  }
   };
   
   private void doSomeLongWork(final int incr){
-	  runOnUiThread(new Runnable(){
+	  h.post(new Runnable(){
 		  public void run(){
 			  progress += incr;
 			  setProgress(progress);
 		  }
 	  });
+//	  runOnUiThread(new Runnable(){
+//		  public void run(){
+//			  progress += incr;
+//			  setProgress(progress);
+//		  }
+//	  });
 	  SystemClock.sleep(250);
   }
   
@@ -162,7 +183,7 @@ public class LunchListActivity extends TabActivity {
   
   private View.OnClickListener onSave=new View.OnClickListener() {
     public void onClick(View v) {
-      current=new Restaurant();
+      current = new Restaurant();
       current.setName(name.getText().toString());
       current.setAddress(address.getText().toString());
       current.setNotes(notes.getText().toString());
