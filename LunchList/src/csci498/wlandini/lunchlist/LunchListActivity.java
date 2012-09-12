@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import csci498.wlandini.lunchlist.R.drawable;
 
@@ -47,7 +48,7 @@ public class LunchListActivity extends TabActivity {
     super.onCreate(savedInstanceState);
     requestWindowFeature(Window.FEATURE_PROGRESS);
     setContentView(R.layout.main);
-    
+    LinkedBlockingQueue lbq = new LinkedBlockingQueue();
     h = new Handler();
     name=(EditText)findViewById(R.id.name);
     address=(EditText)findViewById(R.id.addr);
