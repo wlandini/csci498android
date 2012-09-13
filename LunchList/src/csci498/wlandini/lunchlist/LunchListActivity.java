@@ -28,6 +28,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import csci498.wlandini.lunchlist.R.drawable;
 
@@ -43,6 +44,7 @@ public class LunchListActivity extends TabActivity {
   int progress = 0;
   Handler h;
   boolean isDetails = false;
+  AtomicBoolean isActive = new AtomicBoolean(true);
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -87,33 +89,42 @@ public class LunchListActivity extends TabActivity {
     list.setOnItemClickListener(onListClick);
   }
   
+  public void onResume(){
+	  super.onResume();
+	  isActive.set(true);
+	  if(progress > 0){
+		  startWork();
+	  }
+  }
+  
+  private void startWork(){
+	  setProgressBarVisibility(true);
+	  new Thread(longTask).start();
+  }
+  
+  public void onPause(){
+	  super.onPause();
+	  isActive.set(false);
+  }
+  
   private Runnable longTask = new Runnable(){
 	  public void run(){
-		  for(int i = 0; i < 20; i++){
-			  doSomeLongWork(500);
+		  for(int i = progress; i < 10000 && isActive.get(); i += 200){
+			  doSomeLongWork(200);
 		  }
-		  h.post(new Runnable(){
-			  public void run(){
-				  setProgressBarVisibility(false);
-				  if(getTabHost().getCurrentTab() == 0){
-					  getTabHost().setCurrentTab(1);
+		  if(isActive.get()){
+			  h.post(new Runnable(){
+				  public void run(){
+					  setProgressBarVisibility(false);
+					  if(getTabHost().getCurrentTab() == 0){
+						  getTabHost().setCurrentTab(1);
+					  }
+					  else if(getTabHost().getCurrentTab() == 1){
+						  getTabHost().setCurrentTab(0);
+					  }
 				  }
-				  else if(getTabHost().getCurrentTab() == 1){
-					  getTabHost().setCurrentTab(0);
-				  }
-			  }
-		  });
-//		  runOnUiThread(new Runnable(){
-//			  public void run(){
-//				  setProgressBarVisibility(false);
-//				  if(getTabHost().getCurrentTab() == 0){
-//					  getTabHost().setCurrentTab(1);
-//				  }
-//				  else if(getTabHost().getCurrentTab() == 1){
-//					  getTabHost().setCurrentTab(0);
-//				  }
-//			  }
-//		  });
+			  });
+		  }
 	  }
   };
   
@@ -124,12 +135,6 @@ public class LunchListActivity extends TabActivity {
 			  setProgress(progress);
 		  }
 	  });
-//	  runOnUiThread(new Runnable(){
-//		  public void run(){
-//			  progress += incr;
-//			  setProgress(progress);
-//		  }
-//	  });
 	  SystemClock.sleep(250);
   }
   
@@ -167,6 +172,10 @@ public class LunchListActivity extends TabActivity {
       new AlertDialog.Builder(this).setTitle("Notes on restaurant").setMessage(message).setNeutralButton("Close",null).show();
       //Toast.makeText(this, message, Toast.LENGTH_LONG).show();
       return(true);
+    }
+    else if(item.getItemId() == R.id.run){
+    	startWork();
+    	return(true);
     }
     else if(item.getItemId() == R.id.item1){
     	getTabHost().setCurrentTab(0);
