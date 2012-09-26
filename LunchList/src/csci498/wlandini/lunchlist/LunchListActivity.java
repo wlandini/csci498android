@@ -46,8 +46,16 @@ public class LunchListActivity extends ListActivity {
     adapter = new RestaurantAdapter(model);
     setListAdapter(adapter);
     restaurantId = getIntent().getStringExtra(LunchListActivity.ID_EXTRA);
-    
+    prefs.registerOnSharedPreferenceChangeListener(prefListener);
   }
+  
+  private SharedPreferences.OnSharedPreferenceChangeListener prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+	public void onSharedPreferenceChanged(SharedPreferences sharedPrefs, String key) {
+		if(key.equals("sort_order")){
+			
+		}		
+	}
+  };
   @Override 
   public boolean onOptionsItemSelected(MenuItem item){
 	  if(item.getItemId() == R.id.add){
