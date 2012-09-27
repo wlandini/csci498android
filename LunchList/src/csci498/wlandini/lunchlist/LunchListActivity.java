@@ -85,7 +85,6 @@ public class LunchListActivity extends ListActivity {
   @Override
   public void onDestroy() {
     super.onDestroy();
-    
     helper.close();
   }
   
@@ -101,35 +100,30 @@ public class LunchListActivity extends ListActivity {
     }
     
     @Override
-    public void bindView(View row, Context ctxt,
-                         Cursor c) {
-      RestaurantHolder holder=(RestaurantHolder)row.getTag();
-      
+    public void bindView(View row, Context ctxt, Cursor c) {
+      RestaurantHolder holder = (RestaurantHolder)row.getTag();
       holder.populateFrom(c, helper);
     }
     
     @Override
-    public View newView(Context ctxt, Cursor c,
-                         ViewGroup parent) {
-      LayoutInflater inflater=getLayoutInflater();
-      View row=inflater.inflate(R.layout.row, parent, false);
-      RestaurantHolder holder=new RestaurantHolder(row);
-      
+    public View newView(Context ctxt, Cursor c, ViewGroup parent) {
+      LayoutInflater inflater = getLayoutInflater();
+      View row = inflater.inflate(R.layout.row, parent, false);
+      RestaurantHolder holder = new RestaurantHolder(row);
       row.setTag(holder);
-      
       return(row);
     }
   }
   
   static class RestaurantHolder {
-    private TextView name=null;
-    private TextView address=null;
-    private ImageView icon=null;
+    private TextView name = null;
+    private TextView address = null;
+    private ImageView icon = null;
     
     RestaurantHolder(View row) {
-      name=(TextView)row.findViewById(R.id.title);
-      address=(TextView)row.findViewById(R.id.address);
-      icon=(ImageView)row.findViewById(R.id.icon);
+      name = (TextView)row.findViewById(R.id.title);
+      address = (TextView)row.findViewById(R.id.address);
+      icon = (ImageView)row.findViewById(R.id.icon);
     }
     
     void populateFrom(Cursor c, RestaurantHelper helper) {
