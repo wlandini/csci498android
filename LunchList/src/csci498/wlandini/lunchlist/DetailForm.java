@@ -16,6 +16,7 @@ public class DetailForm extends Activity {
 	RadioGroup types = null;
 	RestaurantHelper helper = null;
 	String restaurantId = null;
+	EditText feed = null;
 	
 	@Override
 	public void onRestoreInstanceState(Bundle state) {
@@ -40,6 +41,7 @@ public class DetailForm extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.detail_form);
 		
+		feed = (EditText)findViewById(R.id.feed);
 		helper = new RestaurantHelper(this);
 		name = (EditText)findViewById(R.id.name);
 		address = (EditText)findViewById(R.id.addr);
@@ -57,6 +59,7 @@ public class DetailForm extends Activity {
 		name.setText(helper.getName(c));
 		address.setText(helper.getAddress(c));
 		notes.setText(helper.getNotes(c));
+		feed.setText(helper.getFeed(c));
 		
 		if(helper.getType(c).equals("sit_down")){
 			types.check(R.id.sit_down);
@@ -86,12 +89,11 @@ public class DetailForm extends Activity {
 					type = "delivery";
 					break;
 			}
-			if(restaurantId == null){
-				helper.insert(name.getText().toString(), address.getText().toString(), type, notes.getText().toString());
+			if(restaurantId == null) {
+				helper.insert(name.getText().toString(), address.getText().toString(), type, notes.getText().toString(), feed.getText().toString());
 				
-			}
-			else{
-				helper.update(restaurantId,name.getText().toString(), address.getText().toString(), type, notes.getText().toString());
+			} else {
+				helper.update(restaurantId,name.getText().toString(), address.getText().toString(), type, notes.getText().toString(), feed.getText().toString());
 			}
 			finish();
 		}
