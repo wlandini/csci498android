@@ -23,6 +23,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class LunchListActivity extends ListActivity {
+  
   Cursor model = null;
   RestaurantAdapter adapter = null;
   EditText name = null;
@@ -33,6 +34,7 @@ public class LunchListActivity extends ListActivity {
   SharedPreferences prefs;
   public final static String ID_EXTRA = "apt.tutorial._ID";
   String restaurantId = null;
+  
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
