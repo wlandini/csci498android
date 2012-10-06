@@ -4,7 +4,7 @@
           package="csci498.wlandini.lunchlist"
           xmlns:android="http://schemas.android.com/apk/res/android">
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-  <uses-permission android:name="android.permission.INTERNET"/>T
+  <uses-permission android:name="android.permission.INTERNET"/>
   <supports-screens android:largeScreens="true"
                     android:normalScreens="true"
                     android:smallScreens="false" />
@@ -16,6 +16,7 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+    <activity android:name=".FeedService"></activity>
     <activity android:name=".FeedActivity"></activity>
     <activity android:name=".DetailForm"></activity>
     <activity android:name="EditPreferences"></activity>
