@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -85,8 +84,6 @@ public class DetailForm extends Activity {
 		address = (EditText)findViewById(R.id.addr);
 		notes = (EditText)findViewById(R.id.notes);
 		types = (RadioGroup)findViewById(R.id.types);
-		Button save = (Button)findViewById(R.id.save);
-		save.setOnClickListener(onSave);
 		if(restaurantId != null){
 			load();
 		}
@@ -110,9 +107,9 @@ public class DetailForm extends Activity {
 		}
 		c.close();
 	}
-	private View.OnClickListener onSave = new View.OnClickListener() {
+	private void save() {
 		
-		public void onClick(View v) {
+		if (name.getText().toString().length() > 0) {
 			// TODO Auto-generated method stub
 			String type = null;
 			
@@ -133,7 +130,6 @@ public class DetailForm extends Activity {
 			} else {
 				helper.update(restaurantId,name.getText().toString(), address.getText().toString(), type, notes.getText().toString(), feed.getText().toString());
 			}
-			finish();
 		}
 	};
 	
@@ -141,5 +137,11 @@ public class DetailForm extends Activity {
 	public void onDestroy(){
 		super.onDestroy();
 		helper.close();
+	}
+	
+	@Override
+	public void onPause() {
+		save();
+		super.onPause();
 	}
 }
