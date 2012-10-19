@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class DetailForm extends Activity {
@@ -23,6 +24,7 @@ public class DetailForm extends Activity {
 	RestaurantHelper helper = null;
 	String restaurantId = null;
 	EditText feed = null;
+	TextView location = null;
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -74,10 +76,11 @@ public class DetailForm extends Activity {
 	}
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState){
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.detail_form);
 		
+		location = (TextView)findViewById(R.id.location);
 		feed = (EditText)findViewById(R.id.feed);
 		helper = new RestaurantHelper(this);
 		name = (EditText)findViewById(R.id.name);
@@ -88,7 +91,8 @@ public class DetailForm extends Activity {
 			load();
 		}
 	}
-	private void load(){
+	
+	private void load() {
 		Cursor c = helper.getById(restaurantId);
 		c.moveToFirst();
 		name.setText(helper.getName(c));
@@ -98,13 +102,13 @@ public class DetailForm extends Activity {
 		
 		if(helper.getType(c).equals("sit_down")){
 			types.check(R.id.sit_down);
-		}
-		else if (helper.getType(c).equals("take_out")){
+		} else if (helper.getType(c).equals("take_out")) {
 			types.check(R.id.take_out);
-		}
-		else{
+		} else {
 			types.check(R.id.delivery);
 		}
+		
+		location.setText(String.valueOf(helper.getLatitude(c)) + ", " + String.valueOf(helper.getLongitude(c)));
 		c.close();
 	}
 	private void save() {
