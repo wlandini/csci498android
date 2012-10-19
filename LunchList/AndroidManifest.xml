@@ -8,6 +8,7 @@
   <supports-screens android:largeScreens="true"
                     android:normalScreens="true"
                     android:smallScreens="false" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
   <application android:label="@string/app_name">
     <activity android:label="@string/app_name"
               android:name=".LunchListActivity">
