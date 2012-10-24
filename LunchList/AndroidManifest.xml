@@ -21,5 +21,7 @@
     <activity android:name=".FeedActivity"></activity>
     <activity android:name=".DetailForm"></activity>
     <activity android:name="EditPreferences"></activity>
+    <uses-library android:required="true" android:name="com.google.android.maps"/>
+    <activity android:name="RestaurantMap"></activity>
   </application>
 </manifest>
