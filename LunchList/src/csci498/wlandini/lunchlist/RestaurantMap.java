@@ -2,6 +2,7 @@ package csci498.wlandini.lunchlist;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
@@ -27,6 +28,11 @@ public class RestaurantMap extends MapActivity {
 			populate();
 		}
 
+		@Override
+		protected boolean onTap(int i) {
+			Toast.makeText(RestaurantMap.this, item.getSnippet(), Toast.LENGTH_SHORT).show();
+			return true;
+		}
 		@Override
 		protected OverlayItem createItem(int i) {
 			return item;
