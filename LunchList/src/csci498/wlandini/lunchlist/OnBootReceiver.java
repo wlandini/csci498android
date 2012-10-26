@@ -41,7 +41,7 @@ public class OnBootReceiver extends BroadcastReceiver {
 	}
 	
 	private static PendingIntent getPendingIntent(Context ctxt) {
-		Intent i = new Intent(ctxt, OnAlarmReciever.class);
+		Intent i = new Intent(ctxt, OnAlarmReceiver.class);
 		return PendingIntent.getBroadcast(ctxt, 0, i, 0);
 	}
 	
