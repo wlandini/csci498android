@@ -32,7 +32,7 @@ public class LunchListActivity extends ListActivity {
   RadioGroup types = null;
   RestaurantHelper helper = null;
   SharedPreferences prefs;
-  public final static String ID_EXTRA = "apt.tutorial._ID";
+  public final static String ID_EXTRA = "csci498.wlandini.lunchlist._ID";
   String restaurantId = null;
   
   @Override
