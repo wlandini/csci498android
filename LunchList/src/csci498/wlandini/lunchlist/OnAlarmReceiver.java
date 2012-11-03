@@ -30,5 +30,4 @@ public class OnAlarmReceiver extends BroadcastReceiver {
 			ctxt.startActivity(i);
 		}
 	}
-
 }
