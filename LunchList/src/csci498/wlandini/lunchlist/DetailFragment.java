@@ -116,24 +116,23 @@ public class DetailFragment extends Fragment {
         Intent i = new Intent(getActivity(), FeedActivity.class);
         i.putExtra(FeedActivity.FEED_URL, feed.getText().toString());
         startActivity(i);
-      }
-      else {
+      } else {
         Toast.makeText(getActivity(), "Sorry, the Internet is not available",Toast.LENGTH_LONG).show();
-      }
+      } 
     
       return true;
-    }
-    else if (item.getItemId() == R.id.location) {
+    } else if (item.getItemId() == R.id.location) {
       locMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, onLocationChange);
       return true;
-    }
-    else if (item.getItemId() == R.id.map) {
+    } else if (item.getItemId() == R.id.map) {
       Intent i = new Intent(getActivity(), RestaurantMap.class);
       i.putExtra(RestaurantMap.EXTRA_LATITUDE, latitude);
       i.putExtra(RestaurantMap.EXTRA_LONGITUDE, longitude);
       i.putExtra(RestaurantMap.EXTRA_NAME, name.getText().toString());
       startActivity(i);
       return true;
+    } else if (item.getItemId() == R.id.help) {
+    	startActivity(new Intent(getActivity(), HelpPage.class));
     }
 
     return super.onOptionsItemSelected(item);
