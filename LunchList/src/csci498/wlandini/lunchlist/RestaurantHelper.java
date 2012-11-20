@@ -38,6 +38,10 @@ class RestaurantHelper extends SQLiteOpenHelper {
     	db.execSQL("ALTER TABLE restaurants ADD COLUMN lat REAL");
     	db.execSQL("ALTER TABLE restaurants ADD COLUMN lon REAL");
     }
+    
+    if (oldVersion < 4) {
+    	db.execSQL("ALTER TABLE restaurants ADD COLUMN phone TEXT");
+    }
   }
 
   public Cursor getAll(String orderBy) {
