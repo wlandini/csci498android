@@ -1,7 +1,7 @@
 package csci498.wlandini.lunchlist;
+
 import android.app.Activity;
 import android.os.Bundle;
-
 
 public class AlarmActivity extends Activity {
 	@Override
