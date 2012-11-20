@@ -22,7 +22,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class DetailFragment extends Fragment {
+public class DetailFragment extends Fragment {	
   EditText name = null;
   EditText address = null;
   EditText phone = null;
@@ -166,6 +166,7 @@ public class DetailFragment extends Fragment {
     Cursor c = getHelper().getById(restaurantId);
     c.moveToFirst();    
     name.setText(getHelper().getName(c));
+    phone.setText(getHelper().getPhone(c));
     address.setText(getHelper().getAddress(c));
     notes.setText(getHelper().getNotes(c));
     feed.setText(getHelper().getFeed(c));
