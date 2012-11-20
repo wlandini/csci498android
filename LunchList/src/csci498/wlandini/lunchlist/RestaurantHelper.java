@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 
 class RestaurantHelper extends SQLiteOpenHelper {
   private static final String DATABASE_NAME = "lunchlistactivity.db";
-  private static final int SCHEMA_VERSION = 3;
+  private static final int SCHEMA_VERSION = 4;
   
   public void updateLocation(String id, double lat, double lon) {
 	  ContentValues cv = new ContentValues();
@@ -25,7 +25,7 @@ class RestaurantHelper extends SQLiteOpenHelper {
   
   @Override
   public void onCreate(SQLiteDatabase db) {
-    db.execSQL("CREATE TABLE restaurants (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, address TEXT, type TEXT, notes TEXT, feed TEXT, lat REAL, lon REAL);");
+    db.execSQL("CREATE TABLE restaurants (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, address TEXT, type TEXT, notes TEXT, feed TEXT, lat REAL, lon REAL, phone TEXT);");
   }
 
   @Override
