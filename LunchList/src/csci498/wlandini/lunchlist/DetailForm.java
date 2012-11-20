@@ -1,6 +1,5 @@
 package csci498.wlandini.lunchlist;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -16,6 +15,7 @@ public class DetailForm extends FragmentActivity {
 			if (details != null) {
 				details.loadRestaurant(restaurantId);
 			}
+			
 		}
 	}
 	
