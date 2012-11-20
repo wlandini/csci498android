@@ -36,6 +36,11 @@ public class DetailFragment extends Fragment {
   double longitude = 0.0d;
   private static final String ARG_REST_ID = "csci498.wlandini.lunchlist.ARG_REST_ID";
   
+  private boolean isTelephonyAvailable() {
+	  return getActivity()
+			  .getPackageManager()
+			  .hasSystemFeature("android.hardware.telephony");
+  }
   @Override
   public void onCreate(Bundle state) {
     super.onCreate(state);
