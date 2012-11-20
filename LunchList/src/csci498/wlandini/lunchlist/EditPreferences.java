@@ -14,12 +14,14 @@ public class EditPreferences extends PreferenceActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		
 		addPreferencesFromResource(R.xml.preferences);
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
+		
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(onChange);
 	}

@@ -1,25 +1,16 @@
 package csci498.wlandini.lunchlist;
 
-import java.util.Properties;
 
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.mcsoxford.rss.RSSFeed;
 import org.mcsoxford.rss.RSSItem;
-import org.mcsoxford.rss.RSSReader;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
-import android.app.AlertDialog.Builder;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +34,7 @@ public class FeedActivity extends ListActivity {
 	      i.putExtra(FeedService.EXTRA_MESSENGER, new Messenger(state.handler));
 	      startService(i);
 	    } else {
+	    	
 	      if (state.handler != null) {
 	        state.handler.attach(this);
 	      }
@@ -59,11 +51,11 @@ public class FeedActivity extends ListActivity {
 	      state.handler.detach();
 	    }
 	    
-	    return(state);
+	    return state;
 	}
 	  
 	private void setFeed(RSSFeed feed) {
-	    state.feed=feed;
+	    state.feed = feed;
 	    setListAdapter(new FeedAdapter(feed));
 	}
 	  
@@ -91,8 +83,7 @@ public class FeedActivity extends ListActivity {
 	    public void handleMessage(Message msg) {
 	    	if (msg.arg1 == RESULT_OK) {
 	    		activity.setFeed((RSSFeed)msg.obj);
-	    	}
-	    	else {
+	    	} else {
 	    		activity.goBlooey((Exception)msg.obj);
 	    	}
 	    }

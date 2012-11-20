@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
-import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -36,8 +35,9 @@ public class LunchFragment extends ListFragment {
   @Override
   public void onResume() {
     super.onResume();
-    helper=new RestaurantHelper(getActivity());
-    prefs=PreferenceManager.getDefaultSharedPreferences(getActivity());
+    
+    helper = new RestaurantHelper(getActivity());
+    prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
     initList();
     prefs.registerOnSharedPreferenceChangeListener(prefListener);
   }
@@ -62,6 +62,7 @@ public class LunchFragment extends ListFragment {
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
+	  
     if (item.getItemId() == R.id.add) {
       startActivity(new Intent(getActivity(), DetailForm.class));      
       return true;
@@ -71,6 +72,7 @@ public class LunchFragment extends ListFragment {
     } else if (item.getItemId() == R.id.help) {
     	startActivity(new Intent(getActivity(), HelpPage.class));
     }
+    
     return super.onOptionsItemSelected(item);
   }
   

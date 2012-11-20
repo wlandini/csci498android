@@ -33,6 +33,7 @@ public class RestaurantMap extends MapActivity {
 			Toast.makeText(RestaurantMap.this, item.getSnippet(), Toast.LENGTH_SHORT).show();
 			return true;
 		}
+		
 		@Override
 		protected OverlayItem createItem(int i) {
 			return item;
@@ -64,7 +65,6 @@ public class RestaurantMap extends MapActivity {
 	
 	@Override
 	protected boolean isRouteDisplayed() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

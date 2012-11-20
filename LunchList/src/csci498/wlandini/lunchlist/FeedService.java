@@ -29,8 +29,7 @@ public class FeedService extends IntentService {
 			RSSFeed result = reader.load(i.getStringExtra(EXTRA_URL));
 			msg.arg1 = Activity.RESULT_OK;
 			msg.obj = result;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			Log.e("LunchList", "Exception parsing feed", e);
 			msg.arg1 = Activity.RESULT_CANCELED;
 			msg.obj = e;
@@ -38,8 +37,7 @@ public class FeedService extends IntentService {
 		
 		try {
 			messenger.send(msg);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			Log.w("LunchList", "Exception sending results to activity", e);
 		}
 	}

@@ -10,7 +10,7 @@ import android.widget.RemoteViewsService;
 public class ListViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 	private Context ctxt = null;
 	private RestaurantHelper helper = null;
-	private Cursor restaurants = null;;;
+	private Cursor restaurants = null;
 	
 	public ListViewsFactory(Context ctxt, Intent intent) {
 		this.ctxt = ctxt;
